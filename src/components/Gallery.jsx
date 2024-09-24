@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { getBreedImages, getSubBreedImages } from '../services/dogApi';
+import sadsnoopy from '../assets/sadsnoopy.jpg'; 
+
 
 const Gallery = ({ selectedBreeds }) => {
   const [images, setImages] = useState([]);
@@ -72,7 +74,12 @@ const Gallery = ({ selectedBreeds }) => {
   }
 
   if (images.length === 0) {
-    return <p>No images to display.</p>;
+    return (
+      <div className="sadsnoopy">
+        <img src={sadsnoopy} alt="No images available :(" />
+        <p>No images to display :(</p>
+      </div>
+    );
   }
 
   return (

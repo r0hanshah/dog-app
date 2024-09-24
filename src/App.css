@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  font-family: Arial, sans-serif;
+  font-family: Roboto, sans-serif;
 }
 
 .breed-selector {
@@ -12,6 +12,8 @@
   width: 200px;
   margin-bottom: 10px;
 }
+
+
 
 .breed-selector ul {
   list-style: none;
@@ -68,4 +70,22 @@
 .pagination button {
   padding: 10px;
   margin: 0 10px;
+}
+
+
+.sadsnoopy {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.sadsnoopy img {
+  max-width: 300px;
+  width: 100%;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.sadsnoopy p {
+  font-size: 1.5em;
+  color: #555;
 }
