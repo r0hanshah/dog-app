@@ -1,3 +1,5 @@
+// src/components/BreedSelector.jsx
+
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { getBreedsList } from '../services/dogApi';
@@ -28,13 +30,39 @@ const BreedSelector = ({ selectedBreeds, setSelectedBreeds }) => {
     );
   };
 
-  const filteredBreeds = Object.keys(breeds).filter((breed) =>
-    breed.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const getDisplayBreeds = () => {
+    const displayBreeds = [];
+
+    for (const breed in breeds) {
+      if (breeds[breed].length > 0) {
+        // Breed has sub-breeds; add each sub-breed
+        breeds[breed].forEach((subBreed) => {
+          const fullBreedName = `${capitalize(subBreed)} ${capitalize(breed)}`;
+          if (fullBreedName.toLowerCase().includes(searchTerm.toLowerCase())) {
+            displayBreeds.push(fullBreedName);
+          }
+        });
+      } else {
+        // Breed has no sub-breeds; add the breed itself
+        const breedName = capitalize(breed);
+        if (breedName.toLowerCase().includes(searchTerm.toLowerCase())) {
+          displayBreeds.push(breedName);
+        }
+      }
+    }
+
+    return displayBreeds.sort();
+  };
+
+  const capitalize = (word) => {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  };
 
   if (loading) {
     return <p>Loading breeds...</p>;
   }
+
+  const displayBreeds = getDisplayBreeds();
 
   return (
     <div className="breed-selector">
@@ -45,35 +73,16 @@ const BreedSelector = ({ selectedBreeds, setSelectedBreeds }) => {
         onChange={(e) => setSearchTerm(e.target.value)}
       />
       <ul>
-        {filteredBreeds.map((breed) => (
-          <li key={breed}>
+        {displayBreeds.map((breedName) => (
+          <li key={breedName}>
             <label>
               <input
                 type="checkbox"
-                checked={selectedBreeds.includes(breed)}
-                onChange={() => handleCheckboxChange(breed)}
+                checked={selectedBreeds.includes(breedName)}
+                onChange={() => handleCheckboxChange(breedName)}
               />
-              {breed.charAt(0).toUpperCase() + breed.slice(1)}
+              {breedName}
             </label>
-            {breeds[breed].length > 0 && (
-              <ul>
-                {breeds[breed].map((subBreed) => {
-                  const fullBreed = `${breed}-${subBreed}`;
-                  return (
-                    <li key={fullBreed}>
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={selectedBreeds.includes(fullBreed)}
-                          onChange={() => handleCheckboxChange(fullBreed)}
-                        />
-                        {subBreed.charAt(0).toUpperCase() + subBreed.slice(1)}
-                      </label>
-                    </li>
-                  );
-                })}
-              </ul>
-            )}
           </li>
         ))}
       </ul>
