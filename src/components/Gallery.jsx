@@ -6,9 +6,11 @@ const Gallery = ({ selectedBreeds }) => {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // Pagination state
+
   const [currentPage, setCurrentPage] = useState(1);
   const imagesPerPage = 20;
+
+  const capitalize = (word) => word.charAt(0).toUpperCase() + word.slice(1);
 
   const fetchImages = async () => {
     setLoading(true);
@@ -16,22 +18,34 @@ const Gallery = ({ selectedBreeds }) => {
 
     try {
       for (const breed of selectedBreeds) {
-        let breedImages;
+        let breedImagesResponse;
+        let breedNameDisplay;
+
         if (breed.includes(' ')) {
           // Breed is in "Sub-breed Breed" format
           const [subBreedName, breedName] = breed.split(' ');
-          breedImages = await getSubBreedImages(
+          breedImagesResponse = await getSubBreedImages(
             breedName.toLowerCase(),
             subBreedName.toLowerCase()
           );
+          breedNameDisplay = `${capitalize(subBreedName)} ${capitalize(breedName)}`;
         } else {
           // Breed has no sub-breeds
-          breedImages = await getBreedImages(breed.toLowerCase());
+          breedImagesResponse = await getBreedImages(breed.toLowerCase());
+          breedNameDisplay = capitalize(breed);
         }
-        allImages = [...allImages, ...breedImages.data.message];
+
+        // Map images to include breed name
+        const breedImages = breedImagesResponse.data.message.map((imageUrl) => ({
+          url: imageUrl,
+          breed: breedNameDisplay,
+        }));
+
+        allImages = [...allImages, ...breedImages];
       }
+
       setImages(allImages);
-      setCurrentPage(1); // Reset to page 1 when new images are fetched
+      setCurrentPage(1); // sets to page 1 when new images are fetched
     } catch (error) {
       console.error('Error fetching images:', error);
     } finally {
@@ -45,7 +59,6 @@ const Gallery = ({ selectedBreeds }) => {
     } else {
       setImages([]);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedBreeds]);
 
   // Pagination logic
@@ -65,9 +78,15 @@ const Gallery = ({ selectedBreeds }) => {
   return (
     <div>
       <div className="gallery">
-        {currentImages.map((imageUrl, index) => (
-          <img key={index} src={imageUrl} alt="Dog" />
-        ))}
+      {currentImages.map((image, index) => (
+        <div className="gallery-item" key={index}>
+          <img
+            src={image.url}
+            alt={`A ${image.breed}`}
+          />
+          <div className="overlay">{image.breed}</div>
+        </div>
+      ))}
       </div>
       <div className="pagination">
         <button
@@ -81,9 +100,7 @@ const Gallery = ({ selectedBreeds }) => {
         </span>
         <button
           onClick={() =>
-            setCurrentPage((prev) =>
-              prev < totalPages ? prev + 1 : prev
-            )
+            setCurrentPage((prev) => (prev < totalPages ? prev + 1 : prev))
           }
           disabled={currentPage >= totalPages}
         >

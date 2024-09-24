@@ -1,19 +1,20 @@
-// src/components/BreedSelector.jsx
-
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { getBreedsList } from '../services/dogApi';
+import Select from 'react-select';
 
 const BreedSelector = ({ selectedBreeds, setSelectedBreeds }) => {
   const [breeds, setBreeds] = useState({});
-  const [searchTerm, setSearchTerm] = useState('');
+  const [options, setOptions] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchBreeds = async () => {
       try {
         const response = await getBreedsList();
-        setBreeds(response.data.message);
+        const breedsData = response.data.message;
+        setBreeds(breedsData);
+        prepareOptions(breedsData);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching breeds:', error);
@@ -22,70 +23,66 @@ const BreedSelector = ({ selectedBreeds, setSelectedBreeds }) => {
     fetchBreeds();
   }, []);
 
-  const handleCheckboxChange = (breedName) => {
-    setSelectedBreeds((prevBreeds) =>
-      prevBreeds.includes(breedName)
-        ? prevBreeds.filter((breed) => breed !== breedName)
-        : [...prevBreeds, breedName]
-    );
-  };
+  const prepareOptions = (breedsData) => {
+    const optionsArray = [];
 
-  const getDisplayBreeds = () => {
-    const displayBreeds = [];
-
-    for (const breed in breeds) {
-      if (breeds[breed].length > 0) {
-        // Breed has sub-breeds; add each sub-breed
-        breeds[breed].forEach((subBreed) => {
+    for (const breed in breedsData) {
+      if (breedsData[breed].length > 0) {
+        // breed has sub-breeds
+        breedsData[breed].forEach((subBreed) => {
           const fullBreedName = `${capitalize(subBreed)} ${capitalize(breed)}`;
-          if (fullBreedName.toLowerCase().includes(searchTerm.toLowerCase())) {
-            displayBreeds.push(fullBreedName);
-          }
+          optionsArray.push({
+            value: fullBreedName,
+            label: fullBreedName,
+            sortKey: capitalize(breed),
+          });
         });
       } else {
-        // Breed has no sub-breeds; add the breed itself
+        // breed has no sub-breeds
         const breedName = capitalize(breed);
-        if (breedName.toLowerCase().includes(searchTerm.toLowerCase())) {
-          displayBreeds.push(breedName);
-        }
+        optionsArray.push({
+          value: breedName,
+          label: breedName,
+          sortKey: breedName,
+        });
       }
     }
 
-    return displayBreeds.sort();
+    // sort options by class name (breed name)
+    optionsArray.sort((a, b) => a.sortKey.localeCompare(b.sortKey));
+
+    setOptions(optionsArray);
   };
 
-  const capitalize = (word) => {
-    return word.charAt(0).toUpperCase() + word.slice(1);
+  const capitalize = (word) =>
+    word.charAt(0).toUpperCase() + word.slice(1);
+
+  const handleChange = (selectedOptions) => {
+    const selectedValues = selectedOptions
+      ? selectedOptions.map((option) => option.value)
+      : [];
+    setSelectedBreeds(selectedValues);
   };
 
   if (loading) {
     return <p>Loading breeds...</p>;
   }
 
-  const displayBreeds = getDisplayBreeds();
+  // set the selected options in the dropdown
+  const selectedOptions = options.filter((option) =>
+    selectedBreeds.includes(option.value)
+  );
 
   return (
     <div className="breed-selector">
-      <input
-        type="text"
-        placeholder="Search breeds..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
+      <Select
+        options={options}
+        isMulti
+        value={selectedOptions}
+        onChange={handleChange}
+        placeholder="Select breeds..."
+        className="breed-select"
       />
-      <ul>
-        {displayBreeds.map((breedName) => (
-          <li key={breedName}>
-            <label>
-              <input
-                type="checkbox"
-                checked={selectedBreeds.includes(breedName)}
-                onChange={() => handleCheckboxChange(breedName)}
-              />
-              {breedName}
-            </label>
-          </li>
-        ))}
-      </ul>
     </div>
   );
 };
