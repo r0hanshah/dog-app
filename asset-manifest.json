@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/dog-app/static/css/main.5454f727.css",
+    "main.js": "/dog-app/static/js/main.0e9c8d17.js",
+    "static/js/453.7525f151.chunk.js": "/dog-app/static/js/453.7525f151.chunk.js",
+    "index.html": "/dog-app/index.html",
+    "main.5454f727.css.map": "/dog-app/static/css/main.5454f727.css.map",
+    "main.0e9c8d17.js.map": "/dog-app/static/js/main.0e9c8d17.js.map",
+    "453.7525f151.chunk.js.map": "/dog-app/static/js/453.7525f151.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.5454f727.css",
+    "static/js/main.0e9c8d17.js"
+  ]
+}
