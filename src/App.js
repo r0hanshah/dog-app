@@ -8,7 +8,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Dog Breed Gallery</h1>
+      <h1>Rohan's Dog Breed Gallery</h1>
       <BreedSelector
         selectedBreeds={selectedBreeds}
         setSelectedBreeds={setSelectedBreeds}
