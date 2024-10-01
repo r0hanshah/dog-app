@@ -26,19 +26,18 @@ const BreedSelector = ({ selectedBreeds, setSelectedBreeds }) => {
   const prepareOptions = (breedsData) => {
     const optionsArray = [];
 
+// In the prepareOptions function
     for (const breed in breedsData) {
-      if (breedsData[breed].length > 0) {
-        // breed has sub-breeds
-        breedsData[breed].forEach((subBreed) => {
-          const fullBreedName = `${capitalize(subBreed)} ${capitalize(breed)}`;
-          optionsArray.push({
-            value: fullBreedName,
-            label: fullBreedName,
-            sortKey: capitalize(breed),
-          });
+      if (breedsData[breed].length === 0) {
+        // Breed has no sub-breeds; include it
+        const breedName = capitalize(breed);
+        optionsArray.push({
+          value: breedName,
+          label: breedName,
+          sortKey: breedName,
         });
       } else {
-        // breed has no sub-breeds
+        // Breed has sub-breeds; include the breed itself without sub-breeds
         const breedName = capitalize(breed);
         optionsArray.push({
           value: breedName,
@@ -47,6 +46,7 @@ const BreedSelector = ({ selectedBreeds, setSelectedBreeds }) => {
         });
       }
     }
+
 
     // sort options by class name (breed name)
     optionsArray.sort((a, b) => a.sortKey.localeCompare(b.sortKey));

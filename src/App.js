@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import BreedSelector from './components/BreedSelector';
 import Gallery from './components/Gallery';
+import Quiz from './components/Quiz';
 import './App.css';
 
 function App() {
@@ -8,12 +9,19 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Rohan's Dog Breed Gallery</h1>
+      <h1>Dog Breed Gallery</h1>
       <BreedSelector
         selectedBreeds={selectedBreeds}
         setSelectedBreeds={setSelectedBreeds}
       />
-      <Gallery selectedBreeds={selectedBreeds} />
+      {/* {selectedBreeds.length >= 0 ? (
+        <Gallery selectedBreeds={selectedBreeds} />
+      ) : (
+        <Quiz setSelectedBreeds={setSelectedBreeds} />
+      )} */}
+              <Gallery selectedBreeds={selectedBreeds} />
+              <Quiz setSelectedBreeds={setSelectedBreeds} />
+
     </div>
   );
 }
