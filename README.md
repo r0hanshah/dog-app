@@ -153,10 +153,6 @@ Contributions are welcome! If you'd like to contribute:
 
 5. **Open a pull request.**
 
-## License
-
-This project is open source and available under the [MIT License](LICENSE).
-
 
 ### Future Improvements
 
@@ -176,9 +172,6 @@ To learn more about React and related technologies, check out the following reso
 
 ## Screenshots
 
-<!-- Include screenshots if possible -->
-![Breed Selector and Gallery](./screenshots/gallery.png)
-*Breed Selector and Gallery View*
 
 ![Quiz Feature](./screenshots/quiz.png)
 *Interactive Quiz when no breeds are selected*
@@ -195,24 +188,6 @@ To deploy the application for production:
    npm run build
    ```
 
-2. **Serve the Build Folder**
-
-   You can use a static server like `serve`:
-
-   ```bash
-   npm install -g serve
-   serve -s build
-   ```
-
-   Alternatively, you can deploy the `build` folder to any static hosting service like GitHub Pages, Netlify, or Vercel.
-
----
-
-## Tips for Reviewers
-
-- **Code Quality**: The project follows best practices in React development, with modular components and clear separation of concerns.
-- **User Experience**: Emphasis on a clean and intuitive interface with responsive design.
-- **Extensibility**: The codebase is structured to allow easy addition of new features.
 
 ---
 
