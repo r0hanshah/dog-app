@@ -4,7 +4,7 @@
 
 The **Dog Breed Gallery** is a React application that allows users to explore and view images of various dog breeds. Users can select their favorite breeds from a multi-select dropdown menu, and the application will display images of those breeds. This interactive gallery enhances user experience with features like pagination, breed selection, and a fun quiz to help users discover new breeds.
 
-![Dog Breed Gallery Screenshot](dog-app/public/images/screenshot.png) 
+![Dog Breed Gallery Screenshot](/public/images/screenshot.png) 
 
 ## Features
 
