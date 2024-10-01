@@ -173,7 +173,7 @@ To learn more about React and related technologies, check out the following reso
 ## Screenshots
 
 
-![Quiz Feature](./screenshots/quiz.png)
+![Quiz Feature](/public/images/quiz.png)
 *Interactive Quiz when no breeds are selected*
 
 
